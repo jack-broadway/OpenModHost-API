@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "winston": "^3.2.1"
+  },
+  "name": "modpackhost",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jack-broadway/ModpackHost.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jack-broadway/ModpackHost/issues"
+  },
+  "homepage": "https://github.com/jack-broadway/ModpackHost#readme"
+}
