@@ -44,27 +44,31 @@ modController.get('/:modSlug/:modVersion', async (req, res) => {
     let modVersion = req.params.modVersion;
     logger.debug(`${modSlug} : ${modVersion}`);
     // Grab Version Details
-    let modDetails = await Resource.getBySlug(modSlug);
-    if(modDetails.length == 0){
-        return res.status(404).json({
-            error: 'Mod does not exist'
-        })
+    try {
+        let modDetails = await Resource.getBySlug(modSlug);
+        if(modDetails.length == 0){
+            return res.status(404).json({
+                error: 'Mod does not exist'
+            })
+        }
+        let modVersions = await Version.getByResourceId(modDetails[0].id);
+        let filteredVersion = modVersions.filter(version => version.version == modVersion);
+        if(filteredVersion.length == 0){
+            return res.status(404).json({
+                error: 'Mod version does not exist'
+            })
+        }
+        let versionAssets = await Asset.getByVersionId(filteredVersion[0].id);
+        if(filteredVersion.length == 0){
+            return res.status(204);
+        }
+        return res.json({
+            md5: versionAssets[0].md5,
+            url: versionAssets[0].url,
+        });
+    } catch (err) {
+        logger.error(err.message);
+        res.status(500).json({error: err.message})
     }
-    let modVersions = await Version.getByResourceId(modDetails[0].id);
-    let filteredVersion = modVersions.filter(version => version.version == modVersion);
-    if(filteredVersion.length == 0){
-        return res.status(404).json({
-            error: 'Mod version does not exist'
-        })
-    }
-    let versionAssets = await Asset.getByVersionId(filteredVersion[0].id);
-    if(filteredVersion.length == 0){
-        return res.status(204);
-    }
-    return res.json({
-        md5: versionAssets[0].md5,
-        url: versionAssets[0].url,
-    });
-
 })
 module.exports = modController;
